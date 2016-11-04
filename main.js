@@ -2,29 +2,28 @@
 // Questions: 
 // Should I use jQuery? If I use jQuery and this code folows a 
 // link to a website without jQuery will that be a problem?
+var crawl = function (url, config) {
+  var num = 0;
+  
+  // var src = URL.createObjectURL(url);
+  // var doc = window.document; 
+  // var children = root.childNodes;
+
+  location.assign(url);
+  console.log(url);
+
+  document.ready();
+  var links = document.links;
 
 
-var request = require('request');
+  for ( var i = num ; i < links.length ; i++ ) {
+     console.log( links[i].href );
+  }
 
-module.exports = {
-  crawl: function ( url ) {
-  var page = getPage(url);
-
-  var links = page.match(/(href=')?.*(')?/);
-
-  console.log(links);
-},
-
-
-  getPage: function ( url ) {
-  var page;
-  request( url, function(error, response, body) { 
-    if( !error ) {
-       page = body;
-    }
-  });  
-  return page;
-}
-
+  // for ( var i = num ; i < links.length ; i++ ) {
+  //    crawl( links[i].href );
+  // }
+  
 
 };
+
