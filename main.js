@@ -3,7 +3,7 @@
 var request = require('request');
 var cheerio = require('cheerio');
 
-var seed = 'https://www.kirupa.com/html5/making_http_requests_js.htm';
+var seed = process.argv[2];
 
 var history = {};
 
