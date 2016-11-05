@@ -5,22 +5,26 @@ var cheerio = require('cheerio');
 
 var seed = 'https://www.kirupa.com/html5/making_http_requests_js.htm';
 
-var crawl = function (url) {
+var history = {};
+
+var crawl = function (url, history) {
 
   request(url, function(error, response, body) {
 
     if ( !error ) {
-      console.log('Crawling ' + url);  
-
+      history[url] = url;
+      console.log('Crawling ' + url); 
       var links = getLinks(body);
-      
-      for ( var i = 0; i < links.length; i++ ) {
-        crawl(links[i]);
-      }
-
-    }  
   
+      for ( var i = 0; i < links.length; i++ ) {
+        if ( !(links[i] in history) ) {
+          crawl(links[i], history);
+        }
+      }
+    }
+
   });
+
 };
 
 var getLinks = function (htmlString) {
@@ -28,10 +32,10 @@ var getLinks = function (htmlString) {
   
   var links = $('a').map(function(element, index) {
     return $(this).attr('href');
-  }).get();
+  }).get(); 
 
   return links;
 };
   
 
-crawl(seed);
+crawl(seed, history);
