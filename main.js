@@ -1,23 +1,27 @@
 
-// Questions: 
-// Should I use jQuery? If I use jQuery and this code folows a 
-// link to a website without jQuery will that be a problem?
-
-
 
 var request = require('request');
 var cheerio = require('cheerio');
 
 var seed = 'https://www.kirupa.com/html5/making_http_requests_js.htm';
 
-request(seed, function(error, response, body) {
-    if ( !error ) {
-      console.log(body);
-      getLinks(body);
-    }  
-});
+var crawl = function (url) {
 
-console.log('out of response');
+  request(url, function(error, response, body) {
+
+    if ( !error ) {
+      console.log('Crawling ' + url);  
+
+      var links = getLinks(body);
+      
+      for ( var i = 0; i < links.length; i++ ) {
+        crawl(links[i]);
+      }
+
+    }  
+  
+  });
+};
 
 var getLinks = function (htmlString) {
   $ = cheerio.load(htmlString);
@@ -28,3 +32,6 @@ var getLinks = function (htmlString) {
 
   return links;
 };
+  
+
+crawl(seed);
